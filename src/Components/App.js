@@ -1,28 +1,7 @@
 import React, {Component} from 'react';
-import '../Styles/main.css';
-import ChildComponent from './ChildComponent';
-import styles from '../Styles/app.module.css';
-import styled,  { css } from 'styled-components';
-
-
-const Button = styled.button`
-  background: transparent;
-  border-radius: 3px;
-  border: 2px solid palevioletred;
-  color: red;
-  margin: 0 1em;
-  padding: 0.25em 1em;
-  
-  ${console.log(123)}
-  ${props =>
-  props.primary &&
-  css`
-      background: palevioletred;
-      color: white;
-    `};
-`;
-
-
+import '../Styles/main.css'
+import TodoList from './TodoList';
+import AddTodo from './AddTodo';
 
 class App extends Component{
 
@@ -30,42 +9,48 @@ class App extends Component{
     super(props);
 
     this.state = {
-      colorClass : styles.yellowClass,
+      todoList : [],
     }
   }
 
-  handleColorChange = () => {
+  todoId = 1;
 
-    if(this.state.colorClass === styles.greenClass){
-      this.setState({
-        colorClass : styles.yellowClass
-      })
-    }
-    else{
-      this.setState({
-        colorClass : styles.greenClass
-      })
-    }
+  handleSubmit = (text) => {
+    this.setState({
+      todoList : [{
+        text: text,
+        todoId: this.todoId,
+        }
+        , ...this.state.todoList],
+    })
+    this.todoId++
+  }
 
-  };
+  handleDelete = (id) => {
+    const shallowList = this.state.todoList.filter((todo)=>{
+      return (todo.todoId !== id);
+    })
+    this.setState({
+      todoList : [...shallowList]
+    })
+    console.log("delete item with :", id)
+  }
 
   render() {
 
+    // console.log('App Render')
+
     return (
-      <>
-        <h1 className={this.state.colorClass}>
-          Hello World!
-        </h1>
+      <main className='App_wrapper'>
+        <header className='App_header'>
+          <h1>Todo List</h1>
+        </header>
 
-        <h2 >
-          Hello World!
-        </h2>
+        <AddTodo  handleSubmit={this.handleSubmit}/>
 
-        <ChildComponent />
+        <TodoList handleDelete={this.handleDelete} todoList={ this.state.todoList}/>
 
-        <Button>Styled Button</Button>
-        <Button primary={true} onClick={this.handleColorChange}>change color</Button>
-      </>
+      </main>
     );
   }
 }

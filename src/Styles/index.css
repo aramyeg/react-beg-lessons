@@ -1,15 +1,19 @@
 :root {
-  --iceCold: #a0d2eb;
-  --freezePurple: #e5eaf5;
-  --medPurple: #d0bdf4;
-  --purpleRain: #8458B3;
-  --heavyPurple: #a28089;
-  --purpleBase: #161748;
-  --greenTree: #478559;
-  --pinkSand: #ffa8B6;
-  --pinkHigh: #f95d9b;
-  --darkSand: #a28089;
-  --blueWater: #39a0ca;
+  /*--iceCold: #a0d2eb;*/
+  /*--freezePurple: #e5eaf5;*/
+  /*--medPurple: #d0bdf4;*/
+  /*--purpleRain: #8458B3;*/
+  /*--heavyPurple: #a28089;*/
+  /*--purpleBase: #161748;*/
+  /*--greenTree: #478559;*/
+  /*--pinkSand: #ffa8B6;*/
+  /*--pinkHigh: #f95d9b;*/
+  /*--darkSand: #a28089;*/
+  /*--blueWater: #39a0ca;*/
+  --navy: #002447;
+  --lightBlue: #53d3d1;
+  --skinTone: #fbeceb;
+  --comfyOrange: #feb249;
 }
 
 body {
@@ -19,6 +23,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--navy);
 }
 
 code {
