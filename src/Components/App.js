@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import '../Styles/main.css'
+import '../Styles/main.css';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 
@@ -22,18 +22,18 @@ class App extends Component{
         todoId: this.todoId,
         }
         , ...this.state.todoList],
-    })
-    this.todoId++
+    });
+    this.todoId++;
   }
 
   handleDelete = (id) => {
     const shallowList = this.state.todoList.filter((todo)=>{
       return (todo.todoId !== id);
-    })
+    });
     this.setState({
       todoList : [...shallowList]
-    })
-    console.log("delete item with :", id)
+    });
+    console.log("delete item with :", id);
   }
 
   render() {

@@ -16,13 +16,15 @@ export default class AddTodo extends Component{
       [ev.target.name] : ev.target.value,
     })
 
-  }
+  };
 
   handleSubmit = (ev) => {
-    ev.preventDefault()
-    this.props.handleSubmit(this.state.text);
-    this.setState({text : ''})
-  }
+    ev.preventDefault();
+    if(this.props.text.trim()){
+      this.props.handleSubmit(this.state.text);
+      this.setState({text : ''});
+    }
+  };
 
   render() {
 

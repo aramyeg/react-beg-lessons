@@ -3,8 +3,6 @@ import TodoItem from './TodoItem'
 
 class TodoList extends PureComponent{
 
-
-
   render() {
 
     // console.log('TodoList Render: ', this.props.todoList);
@@ -15,7 +13,7 @@ class TodoList extends PureComponent{
                   handleDelete={() => {this.props.handleDelete(todo.todoId)}}
                   todo={todo}/>
         )
-    })
+    });
 
     return(
       <section className='TodoList_section'>
