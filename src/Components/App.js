@@ -1,58 +1,44 @@
-import React, {Component} from 'react';
+import React, {useState} from 'react';
 import '../Styles/main.css'
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
+let todoId = 1;
 
-class App extends Component{
+function App(){
+  const [todoList, setTodoList] = useState([]);
 
-  constructor(props){
-    super(props);
+  const handleSubmit = (text) => {
+    const shallowCopy = [...todoList, {
+      text: text,
+      todoId: todoId,
+    }];
+    setTodoList(shallowCopy);
 
-    this.state = {
-      todoList : [],
-    }
+    todoId++
   }
 
-  todoId = 1;
+  const handleDelete = (id) => {
 
-  handleSubmit = (text) => {
-    this.setState({
-      todoList : [{
-        text: text,
-        todoId: this.todoId,
-        }
-        , ...this.state.todoList],
-    })
-    this.todoId++
-  }
-
-  handleDelete = (id) => {
-    const shallowList = this.state.todoList.filter((todo)=>{
+    const shallowList = todoList.filter((todo)=>{
       return (todo.todoId !== id);
-    })
-    this.setState({
-      todoList : [...shallowList]
-    })
-    console.log("delete item with :", id)
+    });
+
+    setTodoList(shallowList);
   }
 
-  render() {
+  return (
+    <main className='App_wrapper'>
+      <header className='App_header'>
+        <h1>Todo List</h1>
+      </header>
 
-    // console.log('App Render')
+      <AddTodo  handleSubmit={handleSubmit}/>
 
-    return (
-      <main className='App_wrapper'>
-        <header className='App_header'>
-          <h1>Todo List</h1>
-        </header>
+      <TodoList handleDelete={handleDelete} todoList={ todoList}/>
 
-        <AddTodo  handleSubmit={this.handleSubmit}/>
+    </main>
+  );
 
-        <TodoList handleDelete={this.handleDelete} todoList={ this.state.todoList}/>
-
-      </main>
-    );
-  }
 }
 
 export default App;
