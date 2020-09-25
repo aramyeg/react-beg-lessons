@@ -20,7 +20,7 @@ export default class AddTodo extends Component{
 
   handleSubmit = (ev) => {
     ev.preventDefault();
-    if(this.props.text.trim()){
+    if(this.state.text.trim()){
       this.props.handleSubmit(this.state.text);
       this.setState({text : ''});
     }
