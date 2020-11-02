@@ -1,44 +1,93 @@
-import React, {useState} from 'react';
-import '../Styles/main.css'
+import React, {Component} from 'react';
+import axios from 'axios';
+import '../Styles/main.css';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
-let todoId = 1;
+const MAIN_URL = 'https://jsonplaceholder.typicode.com';
 
-function App(){
-  const [todoList, setTodoList] = useState([]);
+class App extends Component{
 
-  const handleSubmit = (text) => {
-    const shallowCopy = [...todoList, {
-      text: text,
-      todoId: todoId,
-    }];
-    setTodoList(shallowCopy);
+  constructor(props){
+    super(props);
 
-    todoId++
+    this.state = {
+      todoList : [],
+      toggle : false,
+      disableForm : true,
+    }
   }
 
-  const handleDelete = (id) => {
+  componentDidMount() {
+    axios.get(MAIN_URL+'/todos?_start=0&_limit=5')
+      .then((response)=>{
+        const elements = response.data;
+        const fetchedTodoList = [];
 
-    const shallowList = todoList.filter((todo)=>{
+        elements.forEach((todo)=>{
+          fetchedTodoList.push({
+            text: todo.title,
+            todoId: todo.id,
+          })
+          this.todoId++
+        })
+
+        setTimeout(()=>{
+          this.setState({todoList: fetchedTodoList});
+        }, 5000)
+
+      });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(prevState.disableForm && this.state.disableForm){
+      this.setState({disableForm: false})
+    }
+  }
+
+  todoId = 1;
+
+  handleSubmit = (text) => {
+    this.setState({
+      todoList : [{
+        text: text,
+        todoId: this.todoId,
+        }
+        , ...this.state.todoList],
+    });
+    this.todoId++;
+  }
+
+  handleDelete = (id) => {
+    const shallowList = this.state.todoList.filter((todo)=>{
       return (todo.todoId !== id);
     });
+    this.setState({
+      todoList : [...shallowList]
+    });
+    // console.log("delete item with :", id);
+  };
 
-    setTodoList(shallowList);
+  render() {
+
+    // console.log('App Render')
+
+    return (
+      <main className='App_wrapper'>
+        <header className='App_header'>
+          <h1>Todo List</h1>
+          {/*<button onClick={()=>{*/}
+          {/*  this.setState({*/}
+          {/*    toggle : !this.state.toggle*/}
+          {/*  })*/}
+          {/*}}>Toggle</button>*/}
+        </header>
+
+        <AddTodo toggle={this.state.toggle} disableForm={this.state.disableForm} handleSubmit={this.handleSubmit}/>
+
+        <TodoList handleDelete={this.handleDelete} todoList={ this.state.todoList}/>
+      </main>
+    );
   }
-
-  return (
-    <main className='App_wrapper'>
-      <header className='App_header'>
-        <h1>Todo List</h1>
-      </header>
-
-      <AddTodo  handleSubmit={handleSubmit}/>
-
-      <TodoList handleDelete={handleDelete} todoList={ todoList}/>
-
-    </main>
-  );
-
 }
 
 export default App;
