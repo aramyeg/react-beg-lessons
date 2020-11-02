@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 function AddTodo(props){
 
   const [text, setText] = useState('');
 
   const handleChange = (ev) => {
-    console.log(ev.target.value);
     setText(ev.target.value);
+
   }
 
   const handleSubmit = (ev) => {

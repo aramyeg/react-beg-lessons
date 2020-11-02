@@ -1,20 +1,39 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import '../Styles/main.css'
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
-let todoId = 1;
+import axios from 'axios';
+const BASE_URL = 'https://jsonplaceholder.typicode.com';
 
 function App(){
+
   const [todoList, setTodoList] = useState([]);
+
+  useEffect(()=>{
+
+    axios.get(BASE_URL+'/todos?_limit=5')
+      .then(function (response) {
+        const todoListArr = response.data.map((todo)=>{
+          return {
+            text: todo.title,
+            todoId: todo.id,
+          }
+        });
+        setTodoList(todoListArr);
+    })
+      .catch(function (error) {
+        console.log(error);
+      })
+
+  }, []);
 
   const handleSubmit = (text) => {
     const shallowCopy = [...todoList, {
       text: text,
-      todoId: todoId,
+      todoId: todoList.length + 1,
     }];
     setTodoList(shallowCopy);
 
-    todoId++
   }
 
   const handleDelete = (id) => {

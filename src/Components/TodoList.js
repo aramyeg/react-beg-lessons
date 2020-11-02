@@ -3,12 +3,13 @@ import TodoItem from './TodoItem'
 
 function TodoList(props){
 
-  console.log('TodoList Render: ', props.todoList);
+  // console.log('TodoList Render: ', props.todoList);
 
   const todoList = props.todoList.map((todo)=>{
     return(
       <TodoItem key={todo.todoId}
                 handleDelete={() => {props.handleDelete(todo.todoId)}}
+                // handleEdit={()=>{props.handleEdit(todo.todoId)}}
                 todo={todo}/>
       )
   });
