@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {IconDelete} from "../SVG/Icons";
+import {IconDelete} from "../svg/Icons";
 
 function TodoItem(props){
 

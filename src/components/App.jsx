@@ -1,31 +1,27 @@
 import React, {useState, useEffect} from 'react';
-import '../Styles/main.css'
+import '../styles/main.css'
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
+import {useDataFetching} from "../hooks/useDataFetching"
 import axios from 'axios';
 const BASE_URL = 'https://jsonplaceholder.typicode.com';
+
+function formatter(data) {
+
+  const todoListArr = data.map((todo)=>{
+    return {
+      text: todo.title,
+      todoId: todo.id,
+    }
+  });
+
+  return todoListArr;
+}
 
 function App(){
 
   const [todoList, setTodoList] = useState([]);
-
-  useEffect(()=>{
-
-    axios.get(BASE_URL+'/todos?_limit=5')
-      .then(function (response) {
-        const todoListArr = response.data.map((todo)=>{
-          return {
-            text: todo.title,
-            todoId: todo.id,
-          }
-        });
-        setTodoList(todoListArr);
-    })
-      .catch(function (error) {
-        console.log(error);
-      })
-
-  }, []);
+  const {data, loading} = useDataFetching(BASE_URL+'/todos?_limit=5', [], formatter);
 
   const handleSubmit = (text) => {
     const shallowCopy = [...todoList, {
@@ -45,6 +41,8 @@ function App(){
     setTodoList(shallowList);
   }
 
+  if(loading) return(<h1>LOADING</h1>)
+
   return (
     <main className='App_wrapper'>
       <header className='App_header'>
@@ -53,7 +51,7 @@ function App(){
 
       <AddTodo  handleSubmit={handleSubmit}/>
 
-      <TodoList handleDelete={handleDelete} todoList={ todoList}/>
+      <TodoList handleDelete={handleDelete} todoList={ data }/>
 
     </main>
   );
